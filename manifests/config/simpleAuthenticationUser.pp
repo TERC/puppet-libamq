@@ -2,8 +2,8 @@
 define libamq::simpleAuthenticationUser(
   $target,
   $username = $name,
-  $password = nil,
-  $groups   = nil,
+  $password = false,
+  $groups   = false,
   $ensure   = 'present',
 ) {
   $match     = "/beans/broker/plugins/simpleAuthenticationPlugin/users/authenticationUser[#attribute/username = \"${username}\"]"
@@ -15,7 +15,7 @@ define libamq::simpleAuthenticationUser(
       xmlfile_modification { "${target}: add simpleAuthenticationUser ${username}":
         changes => $changes,
         file    => $target,
-        onlyif  => "match ${match} size == 0",
+        onlyif  => "match ${match} size < 1",
       }
       # Fixup groups
       if $groups {
@@ -40,7 +40,7 @@ define libamq::simpleAuthenticationUser(
       xmlfile_modification { "${target}: remove simpleAuthenticationUser ${username}":
         changes => "rm ${match}",
         file    => $target,
-        onlyif  => "match ${match} size == 1",
+        onlyif  => "match ${match} size > 0",
       }
     }
     default: {

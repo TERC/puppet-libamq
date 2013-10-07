@@ -23,7 +23,7 @@ define libamq::transportConnector(
       xmlfile_modification { "${target}: add transportConnector ${connector_name}":
         changes => $changes,
         file    => $target,
-        onlyif  => "match ${match} size == 0",
+        onlyif  => "match ${match} size < 1",
       } ->
       xmlfile_modification { "${target}: set transportConnector ${connector_name} uri":
         changes => "set ${match}/#attribute/uri \"${uri}\"",
@@ -35,7 +35,7 @@ define libamq::transportConnector(
       xmlfile_modification { "${target}: remove transportConnector ${connector_name}":
         file    => $target,
         changes => "rm ${match}",
-        onlyif  => "match ${match} size == 1",
+        onlyif  => "match ${match} size > 0",
       }
     }
     default: {
