@@ -11,29 +11,28 @@ define libamq::simpleAuthenticationUser(
 
   case $ensure {
     'present': {
-      # Create the user if it doesn't exist
+      if !$groups {
+        fail 'Must define groups if a user may be added'
+      }
+      if !$password {
+        fail 'Must set password if a user may be added'
+      }
       xmlfile_modification { "${target}: add simpleAuthenticationUser ${username}":
         changes => $changes,
         file    => $target,
         onlyif  => "match ${match} size < 1",
       }
-      # Fixup groups
-      if $groups {
-        xmlfile_modification { "${target}: set simpleAuthenticationUser ${username} groups":
-          changes => "set ${match}/#attribute/groups \"${groups}\"",
-          file    => $target,
-          onlyif  => "get ${match}/#attribute/groups != \"${groups}\"",
-          require => Xmlfile_modification[ "${target}: add simpleAuthenticationUser ${username}" ],
-        }
+      xmlfile_modification { "${target}: set simpleAuthenticationUser ${username} groups":
+        changes => "set ${match}/#attribute/groups \"${groups}\"",
+        file    => $target,
+        onlyif  => "get ${match}/#attribute/groups != \"${groups}\"",
+        require => Xmlfile_modification[ "${target}: add simpleAuthenticationUser ${username}" ],
       }
-      # Fixup password
-      if $password {
-        xmlfile_modification { "${target}: set simpleAuthenticationUser ${username} password":
-          changes => "set ${match}/#attribute/password \"${password}\"",
-          file    => $target,
-          onlyif  => "get ${match}/#attribute/password != \"${password}\"",
-          require => Xmlfile_modification[ "${target}: add simpleAuthenticationUser ${username}" ],
-        }
+      xmlfile_modification { "${target}: set simpleAuthenticationUser ${username} password":
+        changes => "set ${match}/#attribute/password \"${password}\"",
+        file    => $target,
+        onlyif  => "get ${match}/#attribute/password != \"${password}\"",
+        require => Xmlfile_modification[ "${target}: add simpleAuthenticationUser ${username}" ],
       }
     }
     'absent': {
