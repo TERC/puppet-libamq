@@ -1,0 +1,3 @@
+define libamq::networkConnector {
+
+}

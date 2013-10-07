@@ -1,0 +1,36 @@
+{
+  "name": "terc-libamq",
+  "version": "0.1.0",
+  "summary": "",
+  "author": "cammoraton",
+  "description": "Wrappers and tests for xmlfile type specific to activemq",
+  "dependencies": [
+    {
+      "name": "terc/xmlfile"
+    }
+  ],
+  "types": [],
+  "checksums": {
+    "Gemfile": "6d58cf81d420ca698795654aeddfe326",
+    "LICENSE": "ef68ea255efaaf820cb0cc620d653f41",
+    "Modulefile": "102cbe920ebe19f55bbfa309f2ed25cd",
+    "README.markdown": "56bdc6118b61c1476f05f6d199ed2211",
+    "Rakefile": "f37e6131fe7de9a49b09d31596f5fbf1",
+    "manifests/config/authorizationEntry.pp": "4924cb3b88585450480f9d979796d3da",
+    "manifests/config/destinationPolicy.pp": "d64fa5ec7879c5ffa84e0c5e8696b4a1",
+    "manifests/config/networkConnector.pp": "64a2bc8cee29c7506df4219c099a3bca",
+    "manifests/config/persistenceAdapter.pp": "2016b9282c80f8ddbbc8d69b4f9c74f4",
+    "manifests/config/simpleAuthenticationUser.pp": "3cafcd53190cb62ce12d2359d6ab4599",
+    "manifests/config/sslContext.pp": "76431f76da24f0839bc1535018a49bce",
+    "manifests/config/systemUsage.pp": "1fb3a83648daf40e259db54a2f80c5d4",
+    "manifests/config/transportConnector.pp": "fc00ae1864f088addfbef6802263b125",
+    "manifests/init.pp": "8885a1d2ceffccd3dba0037769fa9c55",
+    "spec/spec.opts": "a600ded995d948e393fbe2320ba8e51c",
+    "spec/spec_helper.rb": "3ea886dd135e120afa31e0aab12e85b0",
+    "templates/activemq.xml.erb": "30eeff74b7334e59311333b7a151dae9",
+    "tests/init.pp": "0482379ecac2972ac46162cbb0b2b301"
+  },
+  "source": "",
+  "project_page": "",
+  "license": "MIT or Apache 2.0"
+}
