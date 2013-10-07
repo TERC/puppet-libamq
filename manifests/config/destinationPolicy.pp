@@ -10,8 +10,6 @@
 #                </policyEntry>
 #              </policyEntries>
 #            </policyMap>
-#        </destinationPolicy> 
-
+#        </destinationPolicy>
 define libamq::destinationPolicy {
-
 }

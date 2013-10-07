@@ -14,8 +14,8 @@ import "config/*.pp"
 
 class libamq {
   xmlfile { '/tmp/activemq.xml':
-    ensure => "present",
-    content => template("libamq/activemq.xml.erb"),
+    ensure  => present,
+    content => template('libamq/activemq.xml.erb'),
   }
   libamq::storeUsage  { '/tmp/activemq.xml': value => '2 gb' }
   libamq::tempUsage   { '/tmp/activemq.xml': value => '200 mb' }

@@ -1,12 +1,14 @@
-define libamq::simpleAuthenticationUser( $username = $name,
-                                         $password = nil,
-                                         $groups   = nil,
-                                         $ensure   = 'present',
-                                         $target ) {
-                                 
+# Create a simpleAuth user
+define libamq::simpleAuthenticationUser(
+  $target,
+  $username = $name,
+  $password = nil,
+  $groups   = nil,
+  $ensure   = 'present',
+) {
   $match     = "/beans/broker/plugins/simpleAuthenticationPlugin/users/authenticationUser[#attribute/username = \"${username}\"]"
   $changes   = "set /beans/broker/plugins/simpleAuthenticationPlugin/users/authenticationUser[last()+1]/#attribute/username \"${username}\""
-  
+
   case $ensure {
     'present': {
       # Create the user if it doesn't exist
@@ -29,7 +31,7 @@ define libamq::simpleAuthenticationUser( $username = $name,
         xmlfile_modification { "${target}: set simpleAuthenticationUser ${username} password":
           changes => "set ${match}/#attribute/password \"${password}\"",
           file    => $target,
-          onlyif => "get ${match}/#attribute/password != \"${password}\"",
+          onlyif  => "get ${match}/#attribute/password != \"${password}\"",
           require => Xmlfile_modification[ "${target}: add simpleAuthenticationUser ${username}" ],
         }
       }
@@ -40,6 +42,9 @@ define libamq::simpleAuthenticationUser( $username = $name,
         file    => $target,
         onlyif  => "match ${match} size == 1",
       }
+    }
+    default: {
+      fail "Invalid value for ensure ${ensure}"
     }
   }
 }
