@@ -20,6 +20,6 @@ class libamq {
   libamq::storeUsage  { '/tmp/activemq.xml': value => '2 gb' }
   libamq::tempUsage   { '/tmp/activemq.xml': value => '200 mb' }
   libamq::memoryUsage { '/tmp/activemq.xml': value => '40 mb' }
-  libamq::authorizationEntry { 'mcollective': queue => 'mcollective', target => '/tmp/activemq.xml' }
-  libamq::simpleAuthenticationUser { 'test': target => '/tmp/activemq.xml' }
+  libamq::authorizationEntry { 'mcollective': queue => 'mcollective', target => '/tmp/activemq.xml', admin => 'everyone', read => 'everyone', write => 'everyone' }
+  #libamq::simpleAuthenticationUser { 'test': target => '/tmp/activemq.xml' }
 }
