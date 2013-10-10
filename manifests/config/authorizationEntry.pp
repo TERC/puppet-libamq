@@ -43,6 +43,18 @@ define libamq::authorizationEntry::queue(
         file    => $target,
         require => Xmlfile_modification [ "${target}: add authorizationEntry queue ${queue}" ],
       }
+      # Implicitly sort plugins.  As of AMQ5.4 everything inside the plugin node must
+      # be alphabetical.
+      xmlfile_modification { "${target}: authorizationEntry queue ${queue} sort plugins":
+        changes => 'sort /beans/broker/plugins',
+        file    => $target,
+        require => Xmlfile_modification[
+          "${target}: set authorizationEntry queue ${queue} admin",
+          "${target}: set authorizationEntry queue ${queue} read",
+          "${target}: set authorizationEntry queue ${queue} write",
+          "${target}: add authorizationEntry queue ${queue}"
+        ],
+      }
     }
     'absent': {
       xmlfile_modification { "${target}: remove authorizationEntry queue ${queue}":
@@ -101,6 +113,18 @@ define libamq::authorizationEntry::topic(
         onlyif  => "get ${match}/#attribute/admin != \"${admin}\"",
         file    => $target,
         require => Xmlfile_modification [ "${target}: add authorizationEntry topic ${topic}" ],
+      }
+      # Implicitly sort plugins.  As of AMQ5.4 everything inside the plugin node must
+      # be alphabetical.
+      xmlfile_modification { "${target}: authorizationEntry topic ${topic} sort plugins":
+        changes => 'sort /beans/broker/plugins',
+        file    => $target,
+        require => Xmlfile_modification[
+          "${target}: set authorizationEntry topic ${topic} admin",
+          "${target}: set authorizationEntry topic ${topic} read",
+          "${target}: set authorizationEntry topic ${topic} write",
+          "${target}: add authorizationEntry topic ${topic}"
+        ],
       }
     }
     'absent': {

@@ -1,4 +1,5 @@
 # Create a simpleAuth user
+# TODO: Pull in AMQ config documentation and translate it to human!
 define libamq::simpleAuthenticationUser(
   $target,
   $username = $name,
@@ -12,10 +13,10 @@ define libamq::simpleAuthenticationUser(
   case $ensure {
     'present': {
       if !$groups {
-        fail 'Must define groups if a user may be added'
+        fail 'Must set groups if ensure is set to present'
       }
       if !$password {
-        fail 'Must set password if a user may be added'
+        fail 'Must set password if ensure is set to present'
       }
       xmlfile_modification { "${target}: add simpleAuthenticationUser ${username}":
         changes => $changes,
@@ -33,6 +34,16 @@ define libamq::simpleAuthenticationUser(
         file    => $target,
         onlyif  => "get ${match}/#attribute/password != \"${password}\"",
         require => Xmlfile_modification[ "${target}: add simpleAuthenticationUser ${username}" ],
+      }
+      # AMQ as of 5.4 needs to have plugins contained within the broker stanza sorted alphabetically
+      # so we just implicitly sort the stanza after any modification to it.
+      xmlfile_modification { "${target}: simpleAuthenticationUser ${username} sort plugins":
+        changes => 'sort /beans/broker/plugins',
+        file    => $target,
+        require => Xmlfile_modification[
+          "${target}: set simpleAuthenticationUser ${username} password",
+          "${target}: set simpleAuthenticationUser ${username} groups",
+          "${target}: add simpleAuthenticationUser ${username}" ],
       }
     }
     'absent': {

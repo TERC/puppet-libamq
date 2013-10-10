@@ -1,11 +1,23 @@
 # Creates or modifies an SSLContext
 define libamq::sslContext(
-  $target,
   $keystore,
   $keystore_password,
   $truststore,
   $truststore_password,
   $ensure = 'present',
+  $target = $name,
 ){
-  $match = "/beans/broker/plugins/sslContext/sslContext[#attribute/keyStore == \"${keystore}\"][#attribute/trustStore == \"${truststore}\"]"
+  # Only support one SSL context
+  $match = '/beans/broker/plugins/sslContext/sslContext'
+  case $ensure {
+    'present': {
+      # add SSLContext
+    }
+    'absent': {
+      
+    }
+    default: {
+      fail "Invalid value for ensure ${ensure}"
+    }
+  }
 }
