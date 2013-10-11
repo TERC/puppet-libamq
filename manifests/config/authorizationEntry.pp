@@ -1,4 +1,32 @@
-# A message queue
+# ### libamq::authorizationEntry::queue
+# ----------------
+# Creates or modifies an ActiveMQ authorizationPlugin entry for a specified queue.
+# 
+# Queue supports AMQ wildcard syntax
+# - . is used to separate names in a path
+# - * is used to match any name in a path
+# - > is used to recursively match any destination starting from this name
+#
+# #### Arguments
+#
+# target
+# : the xmlfile resource this entry should be placed in
+#
+# queue
+# : the queue this entry applies to.
+# 
+# read
+# : What groups or users can can browse and consume from the destination.  Required if ensure is set to present.
+#
+# write
+# : What groups or users can send messages to the destination.  Required if ensure is set to present.
+#
+# admin
+# : What groups or users have full permissions.  Required if ensure is set to present.
+#
+# ensure
+# : present or absent.  Defaults to present.
+# ----------------
 define libamq::authorizationEntry::queue(
   $target,
   $queue,
@@ -43,7 +71,7 @@ define libamq::authorizationEntry::queue(
         file    => $target,
         require => Xmlfile_modification [ "${target}: add authorizationEntry queue ${queue}" ],
       }
-      # Implicitly sort plugins.  As of AMQ5.4 everything inside the plugin node must
+      # Implicitly sort plugins.  As of AMQ5.4 everything inside the plugins node must
       # be alphabetical.
       xmlfile_modification { "${target}: authorizationEntry queue ${queue} sort plugins":
         changes => 'sort /beans/broker/plugins',
@@ -69,7 +97,35 @@ define libamq::authorizationEntry::queue(
   }
 }
 
-# A message topic
+# ### libamq::authorizationEntry::topic
+# ----------------
+# Creates or modifies an ActiveMQ authorizationPlugin entry for a specified topic.
+# 
+# Topic supports AMQ wildcard syntax
+# - . is used to separate names in a path
+# - * is used to match any name in a path
+# - > is used to recursively match any destination starting from this name
+#
+# #### Arguments
+#
+# target
+# : the xmlfile resource this entry should be placed in.  Required.
+#
+# topic
+# : the queue this entry applies to.  Required.
+# 
+# read
+# : What groups or users can can browse and consume from the destination.  Required if ensure is set to present.
+#
+# write
+# : What groups or users can send messages to the destination.  Required if ensure is set to present.
+#
+# admin
+# : What groups or users have full permissions.  Required if ensure is set to present.
+#
+# ensure
+# : present or absent.  Defaults to present.
+# ----------------
 define libamq::authorizationEntry::topic(
   $target,
   $topic,
@@ -140,7 +196,38 @@ define libamq::authorizationEntry::topic(
   }
 }
 
-# Generally the queue is the same as the topic, so we provide this sugar definition
+# ### libamq::authorizationEntry
+# ----------------
+# Creates or modifies an ActiveMQ authorizationPlugin entry, creating both a queue and a topic
+# 
+# Queue and topic support AMQ wildcard syntax
+# - . is used to separate names in a path
+# - * is used to match any name in a path
+# - > is used to recursively match any destination starting from this name
+#
+# #### Arguments
+#
+# target
+# : the xmlfile resource this entry should be placed in
+#
+# queue
+# : the queue this entry applies to.  Will be set to topic if none specified.
+# 
+# topic
+# : the topic this entry applies to.  Will be set to queue if none specified.
+# 
+# read
+# : What groups or users can can browse and consume from the destination.  Required if ensure is set to present.
+#
+# write
+# : What groups or users can send messages to the destination.  Required if ensure is set to present.
+#
+# admin
+# : What groups or users have full permissions.  Required if ensure is set to present.
+#
+# ensure
+# : present or absent.  Defaults to present.
+# ----------------
 define libamq::authorizationEntry(
   $target,
   $queue  = nil,

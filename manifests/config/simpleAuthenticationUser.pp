@@ -1,5 +1,26 @@
-# Create a simpleAuth user
-# TODO: Pull in AMQ config documentation and translate it to human!
+# ### libamq::simpleAuthenticationUser
+# ----------------
+# Creates an ActiveMQ simpleAuthentication user
+#
+# If you have modest authentication requirements you can use simpleAuthentication, which defines users and groups
+# directly in the ActiveMQ broker configuration.
+#
+# #### Arguments
+#
+# target
+# : the xmlfile resource this entry should be placed in
+#
+# username
+# : the username you are creating, defaults to the resource name
+#
+# password
+# : the password for the user, required if creating a user
+#
+# groups
+# : group memberships.  Required if creating a user
+#
+# ensure
+# : present or absent.  Defaults to present.
 define libamq::simpleAuthenticationUser(
   $target,
   $username = $name,

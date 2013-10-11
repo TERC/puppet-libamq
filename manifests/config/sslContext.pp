@@ -13,8 +13,7 @@ define libamq::sslContext(
     'present': {
       # add SSLContext
     }
-    'absent': {
-      
+    'absent': { 
     }
     default: {
       fail "Invalid value for ensure ${ensure}"
